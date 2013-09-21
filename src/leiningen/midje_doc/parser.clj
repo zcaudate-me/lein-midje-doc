@@ -6,11 +6,11 @@
 
 (def new-current
   {:chapter 0
-   :section 1
-   :subsection 1
-   :subsubsection 1
-   :example 1
-   :image 1
+   :section 0
+   :subsection 0
+   :subsubsection 0
+   :example 0
+   :image 0
    :fact-level 0})
 
 (defn double-vector?
@@ -46,13 +46,16 @@
   (double-vector? fzip [:token :subsection]))
 
 (defn subsubsection-element? [fzip]
-  (double-vector? fzip [:token :subsection]))
+  (double-vector? fzip [:token :subsubsection]))
 
 (defn image-element? [fzip]
   (double-vector? fzip [:token :image]))
 
 (defn paragraph-element? [fzip]
   (double-vector? fzip [:token :paragraph]))
+
+(defn code-element? [fzip]
+  (double-vector? fzip [:token :code]))
 
 (defn paragraph? [fzip]
   (and (= :token (z/tag fzip))
@@ -87,6 +90,11 @@
 (defn fact-form? [fzip]
   (and (= :list (z/tag fzip))
        (= 'fact
+          (-> fzip z/down z/value))))
+
+(defn comment-form? [fzip]
+  (and (= :list (z/tag fzip))
+       (= 'comment
           (-> fzip z/down z/value))))
 
 (defn fact-arrow? [fzip]
@@ -127,9 +135,9 @@
              (dissoc current :code :attrs) tags]
 
             :else
-            (let [[num tags tag] (update-tags tags attrs current [:chapter :example])
-                  current (-> current
-                              (update-in [:example] inc))]
+            (let [current (-> current
+                              (update-in [:example] inc))
+                  [num tags tag] (update-tags tags attrs current [:chapter :example])]
               [[(assoc attrs :type :code :content code :num num :tag tag
                        :fact-level (or (:fact-level current) 0))]
                (dissoc current :code :attrs) tags])))
@@ -151,6 +159,44 @@
                          (parse-code-trailing-comments fzip))]
     [elems (dissoc current :fact-arrow) tags]))
 
+(defn parse-comment-form-contents [fzip]
+  (let [ini fzip]
+    (let [s (z/->string ini)]
+      (-> (.substring s 1 (dec (.length s)))
+          (.replaceFirst "comment(\\s+)?" "")))))
+
+(comment-form?
+ (z/of-string "(comment   \n  (+ 1 2 3) (+ 3 4 5))"))
+
+(comment (parse-comment-form-contents
+          (z/of-string "(comment   \n  (+ 1 2 3) (+ 3 4 5))")))
+
+(defn parse-comment-form [fzip current tags]
+  (let [[elems current tags] (create-code current tags)
+        [attrs current]
+        (let [attrs (:attrs current)]
+          [attrs (dissoc current :attrs)])
+        code (parse-comment-form-contents fzip)
+        [nelems current tags]
+        (cond
+         (:hide attrs)
+         [[] (dissoc current :code :attrs) tags]
+
+         (false? (:numbered attrs))
+         [[(assoc attrs :type :code :content code)]
+          (dissoc current :code :attrs) tags]
+
+         :else
+         (let [current (-> current
+                           (update-in [:example] inc))
+               [num tags tag] (update-tags tags attrs current [:chapter :example])]
+           [[(assoc attrs :type :code :content code :num num :tag tag
+                    :fact-level (or (:fact-level current) 0))]
+            (dissoc current :code :attrs) tags]))]
+    [(concat
+      elems
+      nelems) current tags]))
+
 (defn parse-chapter-element [fzip current tags]
   (let [[elems current tags] (create-code current tags)
         [attrs current]  (merge-element-attribute fzip current)
@@ -166,10 +212,10 @@
 (defn parse-section-element [fzip current tags]
   (let [[elems current tags] (create-code current tags)
         [attrs current]  (merge-element-attribute fzip current)
-        [num tags tag]    (update-tags tags attrs current [:chapter :section])
         current (-> current
-                    (assoc :subsection 1 :subsubsection 1)
-                    (update-in [:section] inc))]
+                    (assoc :subsection 0 :subsubsection 0)
+                    (update-in [:section] inc))
+        [num tags tag]  (update-tags tags attrs current [:chapter :section])]
     [(concat
       elems
       [(assoc attrs :type :section :num num :tag tag)]) current tags]))
@@ -177,10 +223,11 @@
 (defn parse-subsection-element [fzip current tags]
   (let [[elems current tags] (create-code current tags)
         [attrs current]  (merge-element-attribute fzip current)
-        [num tags tag]    (update-tags tags attrs current [:chapter :section :subsection])
         current (-> current
-                    (assoc :subsubsection 1)
-                    (update-in [:subsection] inc))]
+                    (assoc :subsubsection 0)
+                    (update-in [:subsection] inc))
+        [num tags tag]    (update-tags tags attrs current
+                                       [:chapter :section :subsection])]
     [(concat
       elems
       [(assoc attrs :type :subsection :num num :tag tag)]) current tags]))
@@ -188,9 +235,9 @@
 (defn parse-subsubsection-element [fzip current tags]
   (let [[elems current tags] (create-code current tags)
         [attrs current]  (merge-element-attribute fzip current)
-        [num tags tag] (update-tags tags attrs current [:chapter :section :subsection :subsubsection])
         current (-> current
-                    (update-in [:subsubsection] inc))]
+                    (update-in [:subsubsection] inc))
+        [num tags tag] (update-tags tags attrs current [:chapter :section :subsection :subsubsection])]
     [(concat
       elems
       [(assoc attrs :type :subsubsection :num num :tag tag)]) current tags]))
@@ -198,9 +245,10 @@
 (defn parse-image-element [fzip current tags]
   (let [[elems current tags] (create-code current tags)
         [attrs current] (merge-element-attribute fzip current)
-        [num tags] (update-tags tags attrs current [:image])
         current (-> current
-                    (update-in [:image] inc))]
+                    (update-in [:image] inc))
+
+        [num tags] (update-tags tags attrs current [:image])]
     [(concat
       elems
       [(assoc attrs :type :image :num num)]) current tags]))
@@ -213,7 +261,6 @@
       [(assoc attrs :type :paragraph)]) current tags]))
 
 (declare parse-file-element)
-
 
 (defn parse-paragraph [fzip current tags]
   (let [[elems current tags] (create-code current tags)
@@ -289,6 +336,9 @@
         (cond (ns-form? fzip)
               (parse-ns-form fzip current tags)
 
+              (comment-form? fzip)
+              (parse-comment-form fzip current tags)
+
               (file-element? fzip)
               (parse-file-element fzip current tags)
 
@@ -340,7 +390,9 @@
 
 (defn parse-content-loop
   [fzip current elements tags fns]
-  (cond (nil? fzip) [elements current tags]
+  (cond (nil? fzip)
+        (let [[elems current tags] (create-code current tags)]
+          [(concat elements elems) current tags])
         :else
         (let [[elems current tags]
               ((:parse fns) fzip current tags fns)]
@@ -357,6 +409,7 @@
       (parse-content-loop (z/of-file (:src attrs))
                           current elems tags {:parse parse-content-single})
          (catch java.io.FileNotFoundException e
+           (println "Cannot Find file: " (:src attrs))
            [[] current tags]))))
 
 (defn apply-paragraph-stencil [elem tags]

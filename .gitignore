@@ -10,5 +10,8 @@ pom.xml.asc
 .lein-failures
 .lein-plugins
 .lein-repl-history
+.#*
+*.html
 /example
+/scratch
 .DS_Store

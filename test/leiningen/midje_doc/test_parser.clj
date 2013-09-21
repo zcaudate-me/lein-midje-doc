@@ -129,14 +129,26 @@
            (t/parse-content
             (z/of-file
              "/Users/Chris/dev/chit/ribol/test/ribol/test_ribol_strategies.clj")))]]]])))
+
 (fact
- (binding [r/*pygmentize* false]
+ (binding [r/*plain* true]
    (r/render-html-doc
     "minimal-ribol.html"
-    {:title "Ribol Strategies" :sub-title "Use Cases of Conditional Resets in Programs"}
+    {:title "Ribol Strategies" :sub-title "Use Cases for Conditional Resets" :author "Chris Zheng" :email "z@caudate.me" :version "0.0.9" :revision "0.1"}
     (t/parse-content
      (z/of-string "[[:file {:src \"/Users/Chris/dev/chit/ribol/test/ribol/test_ribol_strategies.clj\"}]]"))))
  => nil)
+
+(fact
+ (binding [r/*plain* true]
+   (r/render-html-doc
+    "minimal-ribol.html"
+    {:title "Ribol Strategies" :sub-title "Use Cases for Conditional Resets" :author "Chris Zheng" :email "z@caudate.me" :version "0.0.9" :revision "0.1"}
+    (t/parse-content (z/of-file "test/midje_doc/midje_doc_guide.clj"))))
+ => nil)
+
+(r/render-heading
+ {:title "Ribol Strategies" :sub-title "Use Cases for Conditional Resets" :author ""})
 
 
 (fact

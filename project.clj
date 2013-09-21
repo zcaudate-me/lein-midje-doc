@@ -9,7 +9,14 @@
                  [markdown-clj "0.9.29"]
                  [stencil "0.3.2"]
                  [me.raynes/conch "0.5.0"]
-                 [clojure-watch "0.1.9"]
+                 [org.clojars.zcaudate/watchtower "0.1.2"]
                  [org.xhtmlrenderer/flying-saucer-pdf "9.0.2"]]
   :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
+  :documentation {:plain false
+                  :files {"midje-doc-guide"
+                          {:input "test/midje_doc/midje_doc_guide.clj"
+                           :title "midje-doc"
+                           :sub-title "testable documentation, not literate programs"
+                           :author "Chris Zheng"
+                           :email  "z@caudate.me"}}}
   :eval-in-leiningen true)

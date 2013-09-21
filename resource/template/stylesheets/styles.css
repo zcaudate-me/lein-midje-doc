@@ -149,7 +149,6 @@ header ul a {
 }
 
 strong {
-  color:#222;
   font-weight:700;
 }
 
@@ -170,9 +169,10 @@ header ul a strong {
 }
 
 section {
-  width: 65%;
+  width: 60%;
   float:right;
   padding-bottom:50px;
+  padding-right: 10%;
 }
 
 small {
@@ -193,6 +193,11 @@ footer {
   bottom:50px;
 }
 
+header div.heading {
+  display:none;
+}
+
+
 @media print, screen and (max-width: 960px) {
   
   div.wrapper {
@@ -204,6 +209,14 @@ footer {
     float:none;
     position:static;
     width:auto;
+  }
+  
+  header div.heading {
+    display:block;
+  }
+    
+  section div.heading {
+    display:none;
   }
   
   section {
