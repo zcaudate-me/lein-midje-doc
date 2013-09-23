@@ -1,6 +1,6 @@
 # lein-midje-doc
 
-`lein-midje-doc` plugin attempts to bridge the gap between writing tests and writing documentation.
+`lein-midje-doc` fixes the problem of incorrectly documented examples by bridging the gap between writing tests and writing documentation.
 
 Visit the [main site](http://z.caudate.me/lein-midje-doc/) for more information.
 
