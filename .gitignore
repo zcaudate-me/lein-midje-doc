@@ -1,2 +1,4 @@
 .DS_Store
 .lein-repl-history
+target
+pom.xml
