@@ -67,6 +67,9 @@
    
 [[{:tag "qs-first-doc" :title "test/docs/my_first_document.clj"}]]
 (comment
+(ns docs.my-first-document
+  (:require [midje.sweet :refer :all])) 
+
 [[:chapter {:tag "hello" :title "Hello Midje Doc"}]]
 
 "This is an introduction to writing with midje-doc."
