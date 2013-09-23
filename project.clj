@@ -15,7 +15,7 @@
   :documentation {:files {"index"
                           {:input "test/midje_doc/midje_doc_guide.clj"
                            :title "midje-doc"
-                           :sub-title "testable documentation, not literate programs"
+                           :sub-title "write testable documentation, not literate programs"
                            :author "Chris Zheng"
                            :email  "z@caudate.me"}
                           "my-first-document"
