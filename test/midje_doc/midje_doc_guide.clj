@@ -19,7 +19,7 @@
 > git clone https://github.com/zcaudate/lein-midje-doc.git
 > cd lein-midje-doc      
 > lein midje-doc once
-> open ./midje-doc-guide.html
+> open ./index.html
 "]]
 
 [[:section {:title "Installation"}]]
