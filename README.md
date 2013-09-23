@@ -2,7 +2,7 @@
 
 `lein-midje-doc` plugin attempts to bridge the gap between writing tests and writing documentation.
 
-The documentation can found at [http://lein-midje-doc.github.io](http://lein-midje-doc.github.io)
+Visit the [main site](http://z.caudate.me/lein-midje-doc/) for more information.
 
 ### Features:
  1. To generate `.html` documentation from a `.clj` test file.
@@ -15,8 +15,6 @@ The documentation can found at [http://lein-midje-doc.github.io](http://lein-mid
  2. Removes the need to cut and copy test examples into a readme file.
  3. Entire test suites can potentially be turned into nice looking documentation with relatively little work.
 
-
-
 ### Wishlist:
 - Latex Features
   - Table of Figures
@@ -24,8 +22,7 @@ The documentation can found at [http://lein-midje-doc.github.io](http://lein-mid
   - Citations
   - Customisation Numbering
   - Appendices
-  - Equations
-  
+  - Equations  
 - Themes
 - Elements
   - `:reference` element for tabulization of ns-publics in a namespace 
@@ -35,10 +32,8 @@ The documentation can found at [http://lein-midje-doc.github.io](http://lein-mid
 - Additional Test Suites
   - core.test
   - purnam.test
-   
 - pdf output with page numbering
 - markdown output
-
 - Codebase
   - Refactor with multimethods
   - Clean up hacked-in code

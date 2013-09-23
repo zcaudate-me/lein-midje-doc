@@ -44,7 +44,7 @@
 
 1. Run `lein midje-doc` in a terminal within your project folder. 
 
-1. The output documentation should be generated within the project directory as `/my-first-document.html`. An example of how this should look can be seen [here](http://lein-midje-doc.github.io/my-first-document.html)
+1. The output documentation should be generated within the project directory as `/my-first-document.html`. An example of how this should look can be seen [here](http://z.caudate.me/lein-midje-doc/my-first-document.html)
 
 1. Run `lein midje :autotest` in another terminal window. This will ensure that the documentation is correct.
 
