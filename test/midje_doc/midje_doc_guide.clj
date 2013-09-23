@@ -29,7 +29,7 @@
 [[{:lang "bash" :numbered false}]]
 (comment
 {:user {:plugins ...
-                 [lein-midje-doc "0.0.9"]
+                 [lein-midje-doc "0.0.10"]
                  [lein-midje    "3.0.1"] 
                  ...}}
 )
@@ -177,5 +177,10 @@ The best description for our functions are not found in *source files* but in th
 [[:file {:src "test/midje_doc/api.clj"}]]
 
 [[:file {:src "test/midje_doc/bug_example.clj"}]]
-;;[[:file {:src "test/midje_doc/clojure_tutorial.clj"}]]
 
+[[:chapter {:title "End Notes"}]]
+
+"For any feedback, requests and comments, please feel free to lodge an issue on github or contact me directly.
+
+Chris.
+"

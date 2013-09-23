@@ -1,4 +1,4 @@
-(defproject lein-midje-doc "0.0.9"
+(defproject lein-midje-doc "0.0.10"
   :description "Documentation generator for midje"
   :url "http://www.github.com/zcaudate/lein-midje-doc"
   :license {:name "The MIT License"
@@ -12,16 +12,10 @@
                  [org.clojars.zcaudate/watchtower "0.1.2"]
                  [org.xhtmlrenderer/flying-saucer-pdf "9.0.2"]]
   :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
-  :documentation {:files {"midje-doc-guide"
+  :documentation {:files {"index"
                           {:input "test/midje_doc/midje_doc_guide.clj"
                            :title "midje-doc"
                            :sub-title "testable documentation, not literate programs"
-                           :author "Chris Zheng"
-                           :email  "z@caudate.me"}
-                          "api"
-                          {:input "test/midje_doc/api.clj"
-                           :title "midje-doc"
-                           :sub-title "api refence"
                            :author "Chris Zheng"
                            :email  "z@caudate.me"}
                           "my-first-document"

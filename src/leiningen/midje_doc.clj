@@ -24,7 +24,7 @@
 
 (defn process-once [project]
   (let [dmap (-> project :documentation :files)
-        attrs (select-keys project [:version])
+        attrs (select-keys project [:version :url])
         ks (keys dmap)]
     (binding [leiningen.midje-doc.renderer/*plain*
               (-> project :documentation :plain)]
