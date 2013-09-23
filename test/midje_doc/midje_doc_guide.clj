@@ -1,172 +1,133 @@
 (ns midje-doc.midje-doc-guide
   (:require [midje.sweet :refer :all]))
 
-"
-## Notice
-[`lein-midje-doc`](https://www.github.com/zcaudate/lein-midje-doc) has been used to generate its own documention 
+[[:chapter {:title "Quickstart"}]]
+
+"`lein-midje-doc` can be used to generate documents with code examples from `midje` test files. For motivation, see [chapter {{programming-vs-documentation}}](#programming-vs-documentation) and [chapter  {{tooling-for-documents}}](#tooling-for-documents). For api descriptions, see [chapter {{api-reference}}](#api-reference). 
+[`lein-midje-doc`](https://www.github.com/zcaudate/lein-midje-doc) has been used to generate its own documention. The source can be found [here](https://github.com/zcaudate/lein-midje-doc/blob/master/test/midje_doc/midje_doc_guide.clj)."
+
+[[:section {:title "Syntax Highlighting"}]]
+"For syntax hightlighting of code examples, the pygments python package should be installed. Make sure that the directory containing `pygmentize` is in your `PATH` settings."
+
+[[:section {:title "Generating from Source"}]]
+" The html documentation can be generated after downloading the project:
 "
 
-[[:chapter {:title "Literate Programming is Flawed"}]]
+[[{:lang "bash" :numbered false}]]
+[[:code
+"
+> git clone https://github.com/zcaudate/lein-midje-doc.git
+> cd lein-midje-doc      
+> lein midje-doc once
+> open ./midje-doc-guide.html
+"]]
+
+[[:section {:title "Installation"}]]
+
+"`lein-midje-doc` is a leiningen plugin. Install by adding entries in `~/.lein/profiles.clj`:"
+
+[[{:lang "bash" :numbered false}]]
+(comment
+{:user {:plugins ...
+                 [lein-midje-doc "0.0.8"]
+                 [lein-midje    "3.0.1"] 
+                 ...}}
+)
+
+[[:section {:title "Usage"}]]
+
+"
+1. Start with a new or existing project.
+1. In `project.clj` make sure that `midje` is in the dependencies and place a `:documentation` entry in the `defproject` form ([e.{{qs-project}}](#qs-project)).
+
+1. Create a file in `test/docs/my_first_document.clj` ([e.{{qs-first-doc}}](#qs-first-doc)).
+
+1. Run `lein midje-doc` in a terminal within your project folder. 
+
+1. The output documentation should be generated within the project directory as `/my-first-document.html`. An example of how this should look can be seen [here](http://lein-midje-doc.github.io/my-first-document.html)
+
+1. Run `lein midje :autotest` in another terminal window. This will ensure that the documentation is correct.
+
+1. Use `live-reload` for the best experience of live documenting"
+
+[[{:tag "qs-project" :title "project.clj"}]]
+(comment
+(defproject ...
+  ... 
+  :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
+  ...
+  :documentation 
+  {:files {"<document-name>"             ;; my-first-document
+           {:input "<input-file-path>"   ;; test/docs/my_first_document.clj
+            :title "<title>"             ;; My First Document
+            :sub-title "<sub title>"     ;; Learning how to use midje-doc
+            :author "<name>"       
+            :email  "<email>"}}}
+   ...))
+   
+[[{:tag "qs-first-doc" :title "test/docs/my_first_document.clj"}]]
+(comment
+[[:chapter {:tag "hello" :title "Hello Midje Doc"}]]
+
+"This is an introduction to writing with midje-doc."
+
+[[:section {:title "Defining a function"}]]
+
+"We define function `add-5`"
+
+[[{:numbered false}]]
+(defn add-5 [x]
+  (+ x 5))
+
+[[:section {:title "Testing a function"}]]
+
+"`add-5` outputs the following results seen in
+ [e.{{add-5-1}}](#add-5-1) and [e.{{add-5-10}}](#add-5-10):"
+
+(fact 
+[[{:tag "add-5-1" :title "1 add 5 = 6"}]]
+(add-5 1) => 6
+
+[[{:tag "add-5-10" :title "10 add 5 = 15"}]]
+(add-5 10) => 15)
+)
+
+
+[[:chapter {:title "Programming vs Documentation"}]]
+
 "
 The phrase 'Literate Programming' has been very popular lately. The main idea is that the code is written in a way that allows both a machine *and* a person to understand what is going on. Most people seem to agree that it is a great idea.
 
-I have a differing view. I agree that we should be creating more understandable content. However I disagree with whom the content is primarily created for. I am advocating using the phrase **Testable Documentation** as opposed **Literate Programs**. 
-
-Just a change of wording? Yes. But I belive that it is an important one. 
-"
-
-[[:section {:title "Programming vs Documentation"}]]
-
-"
-Humans and machines are fundamentally different and rely on completely different methods of communication:
+However Humans and machines are fundamentally different and rely on completely different methods of communication:
 
 - Communication to Machines are usually very linear and procedural. It involves giving them a specific set of instructions. First Do This, Then Do That.... Machines don't really care what the code does. It just executes whatever code it has been given.
 
 
-- Communication to Humans usually take a very different form. Most of us wish to learn the bigger picture first before deciding whether to commit time and brainpower to learning a libray or reading the rest of the documentation. We wish to be engaged, inspired and taught, not given a sequence of instructions that each break down to even smaller sequences.
+- Communication to Humans usually take a very different form. We wish to be engaged, inspired and taught, not given a sequence of instructions that each break down to even smaller sequences. The best documentation are usally seperated into logical sections like an `overview`, `table of contents`, `list of figures`, `topic chapters`, `subsections`. There are `text`, `code`, `pictures`, even `sound` and `video`. Documentation structure resemble trees, with links between content that connect related topics and content. They do not resemble program code and therefore should be created independently of the machine code itself.
 
-**In short:** Machines are programmed while humans are engaged, inspired and taught. *Programs* are written for machines. *Documentation* are written for humans.
+**In short:** Machines are programmed while humans are engaged, inspired and taught. *Programs* are written linearly for machines. *Documentation* are written like a woven lattice for humans. The fundamental structure of programs and documentation are very different from each other. Therefore, thinking that documentation can be automatically generated from doc-strings is a **mechanistic** approach not a **humanistic** one. Documents should be written for people, not machines. Our tools for documentation should reflect this as well. 
 "
 
-[[:section {:title "Writing for Humans"}]]
+[[:chapter {:title "Tooling for Documents"}]]
 
+[[:section {:title "Documentation Bugs"}]]
 "
-The words 'literate programming' places importance on the word 'programming', the word 'literate' is really just an adjective that makes it sound human friendly. It is a set of instructions for a machine first - the human readable part is secondary.
-
-Most 'literate programming' tools also take this view - taking source code or test files and generating 'human readable' documentation - which really just means that some pretty colors are used to style the code, making it more attractive to look at. It is definitely one better than reading raw source code, although how 'literate' the output of such a program is to a human being is debateble. Most outputs from literate programs still resemble a set of instructions to a machine, not a document that can engage, inspire and instruct.
-
-We as programmers should aim to write not just for machines, but for humans as well.
-"
-
-[[:chapter {:title "Documentation is Painful"}]]
-
-"
-I *detest* the documentation process. I detest it not because consider myself as 
-*hardcore* but for precisely the opposite reason. I am a *softcore*, I *am not* a 
-*masochist*, and I *do not* take pleasure in throwing myself against a brick wall. 
-
 Programming is a very precise art form. Programming mistakes, especially the little 
 ones, can result in dire consequences and much wasted time. We therefore use tools 
 such as debuggers, type checkers and test frameworks to make our coding lives 
 easier and our source code correct. 
 
-Documentation is our means of communicating how to use or build upon our library to the 
-larger audience of peers. This means that any mistakes in the documentation results in 
+Documentation is the programmers' means of communicating how to use or build upon a library, usually to a larger audience of peers. This means that any mistakes in the documentation results in 
 wasted time for *all involved*. Therefore any mistake in documentation can have a 
 *greater effect* than a mistake in source code because it wastes *everybody's* time.
+
+There are various tools for documentation like `latex`, `wiki` and `markdown`. However, none address the issue that code examples in the documentation are not checked for correctness. A fictitious example illustrates how errors in documentation can produced and propagated can be seen in [chapter {{a-bugs-life}}](#a-bugs-life)
 "
 
-[[:section {:title "A Fictitious Scenario"}]]
-
-"In this fictitious example, a clojure project has been generated using `leiningen`:"
-
-[[{:lang "bash" :numbered false}]]
-(comment
-> lein new fami  
-> cd fami
-> lein repl)
-
-[[:subsection {:title "Version One"}]]
+[[:section {:title "Test Cases vs Docstrings"}]]
 
 "
-A very useful function [`add-5`](#add-5-fn) has been defined [(e.{{add-5-fn}})](#add-5-fn) and the 
-corresponding tests specified [(e.{{add-5-tests}})](#add-5-tests). There are additional entries for [`add-5`](#add-5-fn) in the readme as well as also being scattered around in the readme and various other documents [(e.{{add-5-readme}})](#add-5-readme). 
-
-This version of this library has been released as **version 1.0**
-"
-
-[[{:tag "add-5-fn" :title "src/fami/operations.clj"}]]
-(comment
-(ns fami.operations)
-
-(defn add-5 
-  "add-5 is a function that takes any number of arguments 
-   and adds 5 to the sum"
-  [& ns]
-  (apply + 5 ns))
-  
-)
-[[{:tag "add-5-tests" :title "src/fami/test-operations.clj"}]]
-(comment
-(ns fami.test-operations
-  (:require [fami.operations :refer :all]
-            [midje.sweet :refer :all]))
-
-(fact "add-5 should increment any list of numbers by 5"
-  (add-5 5)  => 10
-  (add-5 1 2 3 4) => 15))
-
-[[{:tag "add-5-readme" :title "readme.md, operations.md"}]]
-(comment
-...
-  
-Here are some of the use cases for add-5
-
-(add-5 5)    ;; => 10
-(add-5 1 2 3 4)   ;; => 15
-
-...
-)
-
-[[:subsection {:title "Version Two"}]]
-
-"
-All is well and the library is super successful with many users. The code undergoes refactoring and it is decided that the original `add-5` [(e.{{add-5-fn}})](#add-5-fn) is too powerful and so it must be muted to only accept one argument. An additional function `add-5-multi` is used to make explicit that the function is taking multiple arguments [(e.{{add-5-v2}})](#add-5-v2). The tests throw an exception [(e.{{add-5-v2-failure}})](#add-5-v2-failure), and are quickly fixed [(e.{{add-5-v2-tests}})](#add-5-v2-tests)
-
-This version of this library has been released as **version 2.0**
-"
-
-[[{:tag "add-5-v2" :title "src/fami/operations.clj &nbsp;-&nbsp; v2"}]]
-(comment
-(ns fami.operations)
-
-(defn add-5 [n]   ;; The muted version
-  "add-5 is a function that takes a number and adds 5 to it"
-  (+ n 5))
-
-(defn add-5-multi 
-  "add-5-multi is a function that takes any number of arguments 
-   and adds 5 to the sum"
-  [& ns]
-  (apply + 5 ns))
-)
-
-[[{:tag "add-5-v2-failure" :title "faliure message"}]]
-(comment
-FAIL "add-5 should increment any list of numbers by 5"
-"Expected: 15
- Actual: clojure.lang.ArityException - Wrong number of args (4) passed to: fami.operations$add-5")
-
- [[{:tag "add-5-v2-tests" :title "src/fami/test-operations.clj"}]]
- (comment
- (ns fami.test-operations
-   (:require [fami.operations :refer :all]
-             [midje.sweet :refer :all]))
-
- (fact "add-5 should increment only one input by 5"
-   (add-5 5) => 10
-   (add-5 1 2) => (throws clojure.lang.ArityException))
-   
- (fact "add-5-multi should increment any list of numbers by 5"
-   (add-5-multi 1 2 3 4) => 15))
-
-
-[[:subsection {:title "A Bug Surfaces"}]]
-
-"Although the tests are correct, the documentation is not. Anyone using this library can potentially have the `clojure.lang.ArityException` bug if they carefully followed instructions in the documentation. 
-
-This is a trival example of a much greater problem. When a project begins to evolve and codebase begins to change, the documentation then becomes incorrect. Although source and test code can be isolated through testing, fixing documentation is a miserable and futile exercise of cut and paste. With no real tool to check whether code is still valid, the documentation become less and less correct until all the examples have to be rechecked and the documention rewritten.
-
-**Then the codebase changes again ...**
-
-Once the library has been release to the world and people have already started using it, there is no taking it back. Bugs propagate through miscommunication. Miscommunication with machines can usually be contained and fixed. Miscommunication with people becomes potentially more difficult to contain."
-
-[[:chapter {:title "Testable Documents"}]]
-
-[[:section {:title "Tests are Clearer than Text"}]]
-
-"
-The best description for our functions are not found in *source files* but in the *test files*. Test files *are* potentially the best documentation because they provide information about what a function outputs, what inputs it accepts and what exceptions it throws. Instead of writing vague phrases ([e.{{split-source}}](#split-source)) in the source code, we can write the descriptions of what a function does directly ([e.{{split-tests}}](#split-tests)). 
+The best description for our functions are not found in *source files* but in the *test files*. Test files *are* potentially the best documentation because they provide information about what a function outputs, what inputs it accepts and what exceptions it throws. Instead of writing vague phrases ([e.{{split-source}}](#split-source)) in the doc-string, we can write the descriptions of what a function does directly with our tests ([e.{{split-tests}}](#split-tests)). 
 "
 
 [[{:tag "split-source" :title "source code (how to do something)"}]]
@@ -177,15 +138,41 @@ The best description for our functions are not found in *source files* but in th
   [(.substring s 0 idx) (.substring s idx)])
 
 [[{:tag "split-tests" :title "test code (how something is used)"}]]
-(fact
+
+(comment
+(fact "split-string usage:"
+
+  (split-string "abcde" 1)  
+  => ["a" "bcde"]
+
   (split-string "abcde" 3)  
-  => ["abc" "de"])
+  => ["abc" "de"]))
 
-"
-Most test files however are usually hidden away in some deep dark corner of the project, usually neglected until a bug in the library occurs and we are forced to run our test framework to figure out what went wrong. And when a project says: **please read the test files for examples**, the common consensus is that the developer has been too slack to write proper documentation.
+"It can be seen that test cases provides a much better explaination for `split-string` than the source doc-string. The irony however is that when a readme says: *`'for documentation, please read the test files'`*, the common consensus is that the project developer is too slack to write proper documentation. However, if we are truly honest with our own faults, this occurs because most programmers are too slack to read tests. **We only want to read pretty documentation.**"
 
-The biggest problem in documenting is having to to deal with change. The bigger the documentation the more there is to fear when change occurs.
-"
+[[:section {:title "Bridging the Divide"}]]
 
+"`lein-midje-doc` plugin attempts to bridge the gap between writing tests and writing documentation by introducing three novel features:"
+
+[[:subsection {:title "Features"}]]
+
+"The features are:
+ 1. To generate `.html` documentation from a `.clj` test file.
+ 2. To express documentation elements as clojure datastructures.
+ 3. To render clojure code and midje facts as code examples.
+ 4. To allow tagging of elements for numbering and linking.
+ "
+ 
+[[:subsection {:title "Benefits"}]]
+"In this way, the programmer as well as all users of the library benefits:
+
+ 1. All documentation errors can be eliminated.
+ 2. Removes the need to cut and copy test examples into a readme file.
+ 3. Entire test suites can potentially be turned into nice looking documentation with relatively little work.
+ "
+
+[[:file {:src "test/midje_doc/api.clj"}]]
+
+[[:file {:src "test/midje_doc/bug_example.clj"}]]
 ;;[[:file {:src "test/midje_doc/clojure_tutorial.clj"}]]
 

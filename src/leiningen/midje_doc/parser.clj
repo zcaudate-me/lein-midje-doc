@@ -165,8 +165,6 @@
       (-> (.substring s 1 (dec (.length s)))
           (.replaceFirst "comment(\\s+)?" "")))))
 
-(comment-form?
- (z/of-string "(comment   \n  (+ 1 2 3) (+ 3 4 5))"))
 
 (comment (parse-comment-form-contents
           (z/of-string "(comment   \n  (+ 1 2 3) (+ 3 4 5))")))
@@ -177,6 +175,35 @@
         (let [attrs (:attrs current)]
           [attrs (dissoc current :attrs)])
         code (parse-comment-form-contents fzip)
+        [nelems current tags]
+        (cond
+         (:hide attrs)
+         [[] (dissoc current :code :attrs) tags]
+
+         (false? (:numbered attrs))
+         [[(assoc attrs :type :code :content code)]
+          (dissoc current :code :attrs) tags]
+
+         :else
+         (let [current (-> current
+                           (update-in [:example] inc))
+               [num tags tag] (update-tags tags attrs current [:chapter :example])]
+           [[(assoc attrs :type :code :content code :num num :tag tag
+                    :fact-level (or (:fact-level current) 0))]
+            (dissoc current :code :attrs) tags]))]
+    [(concat
+      elems
+      nelems) current tags]))
+
+(defn parse-code-form-contents [fzip]
+  (-> fzip z/down z/next z/next z/sexpr))
+
+(defn parse-code-element [fzip current tags]
+  (let [[elems current tags] (create-code current tags)
+        [attrs current]
+        (let [attrs (:attrs current)]
+          [attrs (dissoc current :attrs)])
+        code (parse-code-form-contents fzip)
         [nelems current tags]
         (cond
          (:hide attrs)
@@ -359,6 +386,9 @@
 
               (paragraph-element? fzip)
               (parse-paragraph-element fzip current tags)
+              
+              (code-element? fzip)
+              (parse-code-element fzip current tags)
 
               (image-element? fzip)
               (parse-image-element fzip current tags)
