@@ -1,25 +1,50 @@
 # lein-midje-doc
 
-A Leiningen plugin to do many wonderful things.
+`lein-midje-doc` plugin attempts to bridge the gap between writing tests and writing documentation.
 
-## Usage
+The documentation can found at [http://lein-midje-doc.github.io](http://lein-midje-doc.github.io)
 
-FIXME: Use this for user-level plugins:
+### Features:
+ 1. To generate `.html` documentation from a `.clj` test file.
+ 2. To express documentation elements as clojure datastructures.
+ 3. To render clojure code and midje facts as code examples.
+ 4. To allow tagging of elements for numbering and linking.
 
-Put `[lein-midje-doc "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your
-`:user` profile, or if you are on Leiningen 1.x do `lein plugin install
-lein-midje-doc 0.1.0-SNAPSHOT`.
+### Benefits:
+ 1. All documentation errors can be eliminated.
+ 2. Removes the need to cut and copy test examples into a readme file.
+ 3. Entire test suites can potentially be turned into nice looking documentation with relatively little work.
 
-FIXME: Use this for project-level plugins:
 
-Put `[lein-midje-doc "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your project.clj.
 
-FIXME: and add an example usage that actually makes sense:
+### Wishlist:
+- Latex Features
+  - Table of Figures
+  - Table of Examples
+  - Citations
+  - Customisation Numbering
+  - Appendices
+  - Equations
+  
+- Themes
+- Elements
+  - `:reference` element for tabulization of ns-publics in a namespace 
+- Attributes
+  - `:ignore`
+- Linking to Multiple Documents (Generate an entire Site)
+- Additional Test Suites
+  - core.test
+  - purnam.test
+   
+- pdf output with page numbering
+- markdown output
 
-    $ lein midje-doc
-
+- Codebase
+  - Refactor with multimethods
+  - Clean up hacked-in code
+  
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2013 Chris Zheng
 
-Distributed under the Eclipse Public License, the same as Clojure.
+Distributed under the The MIT License.

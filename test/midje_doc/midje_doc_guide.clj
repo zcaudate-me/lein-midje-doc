@@ -29,7 +29,7 @@
 [[{:lang "bash" :numbered false}]]
 (comment
 {:user {:plugins ...
-                 [lein-midje-doc "0.0.8"]
+                 [lein-midje-doc "0.0.9"]
                  [lein-midje    "3.0.1"] 
                  ...}}
 )
