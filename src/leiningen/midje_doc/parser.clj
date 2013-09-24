@@ -191,7 +191,7 @@
                            (update-in [:example] inc))
                [num tags tag] (update-tags tags attrs current [:chapter :example])]
            [[(assoc attrs :type :code :content code :num num :tag tag
-                    :fact-level (or (:fact-level current) 0))]
+                    :fact-level (or (:fact-level current) 1))]
             (dissoc current :code :attrs) tags]))]
     [(concat
       elems
@@ -223,7 +223,7 @@
                            (update-in [:example] inc))
                [num tags tag] (update-tags tags attrs current [:chapter :example])]
            [[(assoc attrs :type :code :content code :num num :tag tag
-                    :fact-level (or (:fact-level current) 0))]
+                    :fact-level (or (:fact-level current) 1))]
             (dissoc current :code :attrs) tags]))]
     [(concat
       elems

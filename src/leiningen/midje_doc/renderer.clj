@@ -7,7 +7,7 @@
 
 (def ^:dynamic *plain* true)
 
-(defn adjust-fact-code [s spaces]
+(defn adjust-facts-code [s spaces]
   (let [i-arrow (.lastIndexOf s "=>")]
     (if (<= 0 i-arrow)
         (let [i-nl  (.lastIndexOf s "\n" i-arrow)
@@ -16,6 +16,14 @@
               lhs (.substring s 0 i-nl)]
           (str lhs rhs))
         s)))
+
+(defn adjust-indented-code [s spaces]
+  (let [fst-idx (.indexOf s "\n")]
+    (if (< fst-idx 0) s
+      (let [rst-ori (.substring s fst-idx)
+          rst-new (.replaceAll rst-ori (str "\n" spaces) "\n")
+          fst-str (.substring s 0 fst-idx)]
+        (str fst-str rst-new)))))
 
 (defn render-element [elem]
   (condp = (:type elem)
@@ -59,10 +67,10 @@
                      (if-let [t (:title elem)] (str "  &nbsp;-&nbsp; " t)))]])
      (if *plain*
        (pygmentize  "-f" "html" "-l" (or (:lang elem) "clojure")
-                    {:in (adjust-fact-code (:content elem)
-                                           (apply str (repeat (or (:fact-level elem) 0) "  ")))})
-       [:pre (adjust-fact-code (:content elem)
-                               (apply str (repeat (or (:fact-level elem) 0) "  ")))])]))
+                    {:in (adjust-indented-code (:content elem)
+                                               (apply str (repeat (or (:fact-level elem) 0) "  ")))})
+       [:pre (adjust-indented-code (:content elem)
+                                   (apply str (repeat (or (:fact-level elem) 0) "  ")))])]))
 
 
 (defn render-toc-element [elem]
