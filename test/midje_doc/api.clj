@@ -189,30 +189,52 @@ The different types of code can be defined so that code examples render properly
 (def add-5 (add-n 5))
 
 
-[[:subsection {:title "facts"}]]
+[[:subsection {:title "facts form"}]]
 
 "
-Documentation examples put in `fact` forms allows the code to be verified for correctness using `lein midje`. Document element notation still be rendered except before and after the midje arrows (**=>**). Consecutive code within a fact form will stacked as one common code block. An example is given below where the source ([e.{{c-fact-src}}](#c-fact-src)) gives two outputs: ([e.{{c-fact-1}}](#c-fact-1)) and ([e.{{c-fact-2}}](#c-fact-2))
+Documentation examples put in `facts` forms allows the code to be verified for correctness using `lein midje`. Document element notation still be rendered except before and after the midje arrows (**=>**). Consecutive code within a fact form will stacked as one common code block. An example is given below where the source ([e.{{c-facts-src}}](#c-facts-src)) gives two outputs: ([e.{{c-facts-1}}](#c-facst-1)) and ([e.{{c-facts-2}}](#c-facts-2))
 
 "
-[[{:tag "c-fact-src" :title "Fact Example Source"}]]
+[[{:tag "c-facts-src" :title "Facts Form Source"}]]
 (comment
-[[{:tag "fact-form-output" :title "fact form output"}]]
-(fact
-  [[{:title "Definining an atom" :tag "c-fact-1"}]]
+[[{:tag "facts-form-output" :title "Facts Form Output"}]]
+(facts
+  [[{:title "Definining an atom" :tag "c-facts-1"}]]
   (def a (atom 1))
   (deref a) => 1
 
-  [[{:title "Updating the atom" :tag "c-fact-2"}]]
+  [[{:title "Updating the atom" :tag "c-facts-2"}]]
   (update a inc 1)
   (deref a) => 2))
 
-(fact
-  [[{:title "Definining an atom" :tag "c-fact-1"}]]
+(facts
+  [[{:title "Definining an atom" :tag "c-facts-1"}]]
   (def a (atom 1))
   (deref a) => 1
   
-  [[{:title "Updating the atom" :tag "c-fact-2"}]]
+  [[{:title "Updating the atom" :tag "c-factss-2"}]]
+  (update a inc 1)
+  (deref a) => 2)
+
+[[:subsection {:title "fact form"}]]
+
+"For an entire block to be embedded in code, use the `fact` form. The source ([e.{{c-fact-src}}](#c-fact-src)) will render the output ([e.{{fact-form-output}}](#fact-form-output))"
+
+[[{:tag "c-fact-src" :title "Fact Form Source"}]]
+(comment
+[[{:tag "fact-form-output" :title "Fact Form Output"}]]
+(fact
+  (def a (atom 1))
+  (deref a) => 1
+
+  (update a inc 1)
+  (deref a) => 2))
+
+[[{:title "Fact Form Output"}]]
+(fact
+  (def a (atom 1))
+  (deref a) => 1
+
   (update a inc 1)
   (deref a) => 2)
 

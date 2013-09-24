@@ -92,6 +92,12 @@
        (= 'fact
           (-> fzip z/down z/value))))
 
+(defn facts-form? [fzip]
+  (and (= :list (z/tag fzip))
+       (= 'facts
+          (-> fzip z/down z/value))))
+
+
 (defn comment-form? [fzip]
   (and (= :list (z/tag fzip))
        (= 'comment
@@ -165,10 +171,6 @@
       (-> (.substring s 1 (dec (.length s)))
           (.replaceFirst "comment(\\s+)?" "")))))
 
-
-(comment (parse-comment-form-contents
-          (z/of-string "(comment   \n  (+ 1 2 3) (+ 3 4 5))")))
-
 (defn parse-comment-form [fzip current tags]
   (let [[elems current tags] (create-code current tags)
         [attrs current]
@@ -194,6 +196,39 @@
     [(concat
       elems
       nelems) current tags]))
+
+(defn parse-fact-form-contents [fzip]
+  (let [ini fzip]
+    (let [s (z/->string ini)]
+      (-> (.substring s 1 (dec (.length s)))
+          (.replaceFirst "fact(\\s+)?" "")))))
+
+(defn parse-fact-form [fzip current tags]
+  (let [[elems current tags] (create-code current tags)
+        [attrs current]
+        (let [attrs (:attrs current)]
+          [attrs (dissoc current :attrs)])
+        code (parse-fact-form-contents fzip)
+        [nelems current tags]
+        (cond
+         (:hide attrs)
+         [[] (dissoc current :code :attrs) tags]
+
+         (false? (:numbered attrs))
+         [[(assoc attrs :type :code :content code)]
+          (dissoc current :code :attrs) tags]
+
+         :else
+         (let [current (-> current
+                           (update-in [:example] inc))
+               [num tags tag] (update-tags tags attrs current [:chapter :example])]
+           [[(assoc attrs :type :code :content code :num num :tag tag
+                    :fact-level (or (:fact-level current) 0))]
+            (dissoc current :code :attrs) tags]))]
+    [(concat
+      elems
+      nelems) current tags]))
+
 
 (defn parse-code-form-contents [fzip]
   (-> fzip z/down z/next z/next z/sexpr))
@@ -342,7 +377,7 @@
 
 (declare parse-content-loop)
 
-(defn parse-fact-form [fzip current tags fns]
+(defn parse-facts-form [fzip current tags fns]
   (let [[elems current tags]
         (parse-content-loop
          (-> fzip z/down z/next)
@@ -403,7 +438,10 @@
               (parse-attribute fzip current tags)
 
               (fact-form? fzip)
-              (parse-fact-form fzip current tags fns)
+              (parse-fact-form fzip current tags)
+
+              (facts-form? fzip)
+              (parse-facts-form fzip current tags fns)
 
               (fact-arrow? fzip)
               (parse-arrow fzip current tags)

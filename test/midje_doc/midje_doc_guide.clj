@@ -29,8 +29,8 @@
 [[{:lang "bash" :numbered false}]]
 (comment
 {:user {:plugins ...
-                 [lein-midje-doc "0.0.10"]
-                 [lein-midje    "3.0.1"] 
+                 [lein-midje-doc "0.0.11"]
+                 [lein-midje     "3.0.1"] 
                  ...}}
 )
 
@@ -143,7 +143,7 @@ The best description for our functions are not found in *source files* but in th
 [[{:tag "split-tests" :title "test code (how something is used)"}]]
 
 (comment
-(fact "split-string usage:"
+(facts "split-string usage:"
 
   (split-string "abcde" 1)  
   => ["a" "bcde"]

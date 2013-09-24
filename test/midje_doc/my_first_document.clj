@@ -18,7 +18,7 @@
 "`add-5` outputs the following results seen in
  [e.{{add-5-1}}](#add-5-1) and [e.{{add-5-10}}](#add-5-10):"
 
-(fact 
+(facts
 [[{:tag "add-5-1" :title "1 add 5 = 6"}]]
 (add-5 1) => 6
 
