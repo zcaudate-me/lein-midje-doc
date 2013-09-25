@@ -1,6 +1,6 @@
 (ns midje-doc.my-first-document
   (:require [midje.sweet :refer :all]))
-  
+
 [[:chapter {:tag "hello" :title "Hello Midje Doc"}]]
 
 "This is an introduction to writing with midje-doc."
@@ -17,6 +17,16 @@
 
 "`add-5` outputs the following results seen in
  [e.{{add-5-1}}](#add-5-1) and [e.{{add-5-10}}](#add-5-10):"
+
+
+(fact
+  (+ 1 1) => 2
+  (+ 1 3) => 2)
+
+(comment
+  (+ 1 1) => 2
+  (+ 1 3) => 2)
+
 
 (facts
 [[{:tag "add-5-1" :title "1 add 5 = 6"}]]

@@ -191,7 +191,7 @@
                            (update-in [:example] inc))
                [num tags tag] (update-tags tags attrs current [:chapter :example])]
            [[(assoc attrs :type :code :content code :num num :tag tag
-                    :fact-level (or (:fact-level current) 1))]
+                    :fact-level (inc (or (:fact-level current) 0)))]
             (dissoc current :code :attrs) tags]))]
     [(concat
       elems
@@ -223,7 +223,7 @@
                            (update-in [:example] inc))
                [num tags tag] (update-tags tags attrs current [:chapter :example])]
            [[(assoc attrs :type :code :content code :num num :tag tag
-                    :fact-level (or (:fact-level current) 1))]
+                    :fact-level (inc (or (:fact-level current) 0)))]
             (dissoc current :code :attrs) tags]))]
     [(concat
       elems
@@ -342,7 +342,7 @@
 
 (defn update-code [fzip current tags]
   [[] (update-in current [:code]
-                 str "\n" (z/->string fzip)) tags])
+                 str "\n\n" (z/->string fzip)) tags])
 
 (defn parse-arrow [fzip current tags]
   [[]
@@ -421,7 +421,7 @@
 
               (paragraph-element? fzip)
               (parse-paragraph-element fzip current tags)
-              
+
               (code-element? fzip)
               (parse-code-element fzip current tags)
 
