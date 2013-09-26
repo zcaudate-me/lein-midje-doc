@@ -4,6 +4,8 @@
 
 Visit the [main site](http://z.caudate.me/lein-midje-doc/) for more information.
 
+[![ScreenShot](https://raw.github.com/zcaudate/lein-midje-doc/documentation_tool.png)](http://youtu.be/8FjvhDPIUWE)
+
 ### Features:
  1. To generate `.html` documentation from a `.clj` test file.
  2. To express documentation elements as clojure datastructures.
