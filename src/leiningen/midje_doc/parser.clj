@@ -137,7 +137,8 @@
             [[] (dissoc current :code :attrs) tags]
 
             (false? (:numbered attrs))
-            [[(assoc attrs :type :code :content code)]
+            [[(assoc attrs :type :code :content code
+                           :fact-level (or (:fact-level current) 0))]
              (dissoc current :code :attrs) tags]
 
             :else
@@ -183,7 +184,8 @@
          [[] (dissoc current :code :attrs) tags]
 
          (false? (:numbered attrs))
-         [[(assoc attrs :type :code :content code)]
+         [[(assoc attrs :type :code :content code
+                        :fact-level (inc (or (:fact-level current) 0)))]
           (dissoc current :code :attrs) tags]
 
          :else
@@ -215,7 +217,8 @@
          [[] (dissoc current :code :attrs) tags]
 
          (false? (:numbered attrs))
-         [[(assoc attrs :type :code :content code)]
+         [[(assoc attrs :type :code :content code
+                        :fact-level (inc (or (:fact-level current) 0)))]
           (dissoc current :code :attrs) tags]
 
          :else
@@ -252,8 +255,7 @@
          (let [current (-> current
                            (update-in [:example] inc))
                [num tags tag] (update-tags tags attrs current [:chapter :example])]
-           [[(assoc attrs :type :code :content code :num num :tag tag
-                    :fact-level (or (:fact-level current) 0))]
+           [[(assoc attrs :type :code :content code :num num :tag tag)]
             (dissoc current :code :attrs) tags]))]
     [(concat
       elems
