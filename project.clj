@@ -1,4 +1,4 @@
-(defproject lein-midje-doc "0.0.13"
+(defproject lein-midje-doc "0.0.14"
   :description "Documentation generator for midje"
   :url "http://www.github.com/zcaudate/lein-midje-doc"
   :license {:name "The MIT License"
