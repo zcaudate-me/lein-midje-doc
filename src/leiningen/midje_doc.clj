@@ -51,7 +51,7 @@
   "I don't do a lot."
   [project & args]
   (let [opts (set args)
-        project (if (or (opts "plain") (check-pygmentize))
+        project (if (or (opts "plain") (not (check-pygmentize)))
                   (assoc-in project [:documentation :plain] true)
                   project)]
     (if (opts "once")

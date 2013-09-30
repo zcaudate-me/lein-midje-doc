@@ -66,11 +66,11 @@
        [:h4 [:i (str "e." (:num elem)
                      (if-let [t (:title elem)] (str "  &nbsp;-&nbsp; " t)))]])
      (if *plain*
-       (pygmentize  "-f" "html" "-l" (or (:lang elem) "clojure")
-                    {:in (adjust-indented-code (:content elem)
-                                               (apply str (repeat (or (:fact-level elem) 0) "  ")))})
        [:pre (adjust-indented-code (:content elem)
-                                   (apply str (repeat (or (:fact-level elem) 0) "  ")))])]))
+                                   (apply str (repeat (or (:fact-level elem) 0) "  ")))]
+       (pygmentize  "-f" "html" "-l" (or (:lang elem) "clojure")
+                   {:in (adjust-indented-code (:content elem)
+                                              (apply str (repeat (or (:fact-level elem) 0) "  ")))}))]))
 
 
 (defn render-toc-element [elem]
