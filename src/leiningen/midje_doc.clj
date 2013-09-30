@@ -52,8 +52,8 @@
   [project & args]
   (let [opts (set args)
         project (if (or (opts "plain") (check-pygmentize))
-                  (assoc-in project [:documentation :plain] true))]
-
+                  (assoc-in project [:documentation :plain] true)
+                  project)]
     (if (opts "once")
       (process-once project)
       (do
