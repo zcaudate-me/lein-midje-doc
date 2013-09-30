@@ -2,13 +2,14 @@
 
 `lein-midje-doc` fixes the problem of incorrectly documented examples by bridging the gap between writing tests and writing documentation.
 
+### Notice:
+It has come to my attention that users of this plugin (currently 0.0.13) will need to install [pygments](http://pygments.org/) as the library won't work otherwise. This will be definitely be fixed in future versions but I'm a little bit busy right now so please excuse the mess =)
+
+
 Visit the [main site](http://z.caudate.me/lein-midje-doc/) for more information.
 
 Here is a video of the demonstration of a workflow using midje, midje-doc and live-reload. For those that wish to cut to the chase, skip to ~around 7:20
 [![ScreenShot](https://raw.github.com/zcaudate/lein-midje-doc/master/documentation_tool.png)](http://youtu.be/8FjvhDPIUWE)
-
-### Notice:
-It has come to my attention that users of this plugin (currently 0.0.13) will need to install [pygments](http://pygments.org/) as the library won't work otherwise. This will be definitely be fixed in future versions but I'm a little bit busy right now so please excuse the mess =)
 
 ### Features:
  1. To generate `.html` documentation from a `.clj` test file.
