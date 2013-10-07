@@ -7,6 +7,10 @@
 
 (def ^:dynamic *plain* true)
 
+(defn basic-html-escape
+  [data]
+  (clojure.string/escape data { \< "&lt;" \> "&gt;" \& "&amp;" \" "&quot;" }))
+
 (defn adjust-facts-code [s spaces]
   (let [i-arrow (.lastIndexOf s "=>")]
     (if (<= 0 i-arrow)
@@ -56,7 +60,7 @@
     :ns
     [:div
      (if *plain*
-       [:pre (:content elem)]
+       [:pre (-> elem :content basic-html-escape)]
        (pygmentize  "-f" "html" "-l" (or (:lang elem) "clojure")
                     {:in (:content elem)}))]
     :code
@@ -66,8 +70,9 @@
        [:h4 [:i (str "e." (:num elem)
                      (if-let [t (:title elem)] (str "  &nbsp;-&nbsp; " t)))]])
      (if *plain*
-       [:pre (adjust-indented-code (:content elem)
-                                   (apply str (repeat (or (:fact-level elem) 0) "  ")))]
+       [:pre (-> (:content elem)
+                 (basic-html-escape)
+                 (adjust-indented-code (apply str (repeat (or (:fact-level elem) 0) "  "))))]
        (pygmentize  "-f" "html" "-l" (or (:lang elem) "clojure")
                    {:in (adjust-indented-code (:content elem)
                                               (apply str (repeat (or (:fact-level elem) 0) "  ")))}))]))
