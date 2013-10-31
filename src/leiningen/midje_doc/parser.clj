@@ -494,6 +494,7 @@
 
 (defn parse-content
   ([fzip] (parse-content fzip new-current [] {}))
+  ([fzip proj] (parse-content fzip new-current [] {:PROJECT proj}))
   ([fzip current elements tags]
      (let [[elements current tags]
            (parse-content-loop fzip current elements tags  {:parse parse-content-single})]

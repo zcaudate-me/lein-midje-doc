@@ -9,14 +9,14 @@
 
 (programs which)
 
-(defn process-doc [k doc]
+(defn process-doc [k doc project]
   (let [infile (:input doc)
         outfile (str k ".html")]
     (println "Generating" outfile)
     (try
       (render-html-doc outfile
                        doc
-                       (parse-content (z/of-file infile)))
+                       (parse-content (z/of-file infile) project))
       (println "...... DONE!")
       (catch Throwable t
         (println t)
@@ -30,7 +30,7 @@
               (-> project :documentation :plain)]
       (doseq [k ks]
         (let [doc (get dmap k)]
-          (process-doc k (merge attrs doc)))))))
+          (process-doc k (merge attrs doc) project))))))
 
 (defn process-watch [project]
   (let [p-once (fn [_] (process-once project))]

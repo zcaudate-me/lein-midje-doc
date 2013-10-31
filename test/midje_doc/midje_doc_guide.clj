@@ -24,14 +24,13 @@
 
 [[:section {:title "Installation"}]]
 
-"`lein-midje-doc` is a leiningen plugin. Install by adding entries in `~/.lein/profiles.clj`:"
+"`lein-midje-doc` is a leiningen plugin. Install by adding entries in `~/.lein/profiles.clj`:
 
-[[{:lang "bash" :numbered false}]]
-(comment
-  {:user {:plugins ...
-          [lein-midje-doc "0.0.15"]
-          [lein-midje     "3.0.1"]
-          ...}})
+     {:user {:plugins ...
+             [lein-midje-doc '{{PROJECT.version}}']
+             [lein-midje     '3.0.1']
+             ...}}
+"
 
 
 [[:section {:title "Usage"}]]
