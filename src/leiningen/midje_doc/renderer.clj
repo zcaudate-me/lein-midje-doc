@@ -129,6 +129,19 @@
    [:br]
    [:hr]])
 
+(defn render-tracking [document]
+  (if (:tracking document)
+    [:script
+      (str "var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '" (:tracking document) "']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();")]))
+
 (defn render-html-doc [output document elems]
   (let [heading (render-heading document)]
     (spit output
@@ -154,4 +167,5 @@
               heading
               (map render-element elems)]]
             [:script {:type "text/javascript"}
-             (slurp-res "template/javascripts/scale.fix.js")]]))))
+             (slurp-res "template/javascripts/scale.fix.js")]
+            (render-tracking document)]))))

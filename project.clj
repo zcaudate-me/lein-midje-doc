@@ -1,4 +1,4 @@
-(defproject lein-midje-doc "0.0.15"
+(defproject lein-midje-doc "0.0.16"
   :description "Documentation generator for midje"
   :url "http://www.github.com/zcaudate/lein-midje-doc"
   :license {:name "The MIT License"
@@ -17,7 +17,8 @@
                            :title "midje-doc"
                            :sub-title "write testable documentation, not literate programs"
                            :author "Chris Zheng"
-                           :email  "z@caudate.me"}
+                           :email  "z@caudate.me"
+                           :tracking "UA-31320512-2"}
                           "doc/my-first-document"
                           {:input "test/midje_doc/my_first_document.clj"
                            :title "title goes here"
