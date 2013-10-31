@@ -2,6 +2,15 @@
 
 `lein-midje-doc` fixes the problem of incorrectly documented examples by bridging the gap between writing tests and writing documentation.
 
+
+### Installation
+
+`lein-midje-doc` is a leiningen plugin. Install by adding entries in `~/.lein/profiles.clj`:
+
+     {:user {:plugins ...
+             [lein-midje-doc "0.0.17"]
+             ...}}
+
 ### Notice:
 It has come to my attention that users of this plugin will need to install [pygments](http://pygments.org/) as the library won't work otherwise. This will be definitely be fixed in future versions but I'm a little bit busy right now so please excuse the mess =)
 
