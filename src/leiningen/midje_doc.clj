@@ -36,7 +36,7 @@
   (let [p-once (fn [_] (process-once project))]
     (p-once nil)
     (watcher [(:root project)]
-             (rate 50) ;; poll every 50ms
+             (rate 200) ;; poll every 200ms
              (file-filter ignore-dotfiles) ;; add a filter for the files we care about
              (file-filter (extensions :clj :cljs)) ;; filter by extensions
              (on-modify  p-once); Optional

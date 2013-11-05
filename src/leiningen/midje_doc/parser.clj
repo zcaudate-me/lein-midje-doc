@@ -136,7 +136,8 @@
       (cond (:hide attrs)
             [[] (dissoc current :code :attrs) tags]
 
-            (false? (:numbered attrs)) ;;(or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
+            ;;(false? (:numbered attrs)) 
+            (or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
             [[(assoc attrs :type :code :content code
                            :fact-level (or (:fact-level current) 0))]
              (dissoc current :code :attrs) tags]
@@ -183,7 +184,8 @@
          (:hide attrs)
          [[] (dissoc current :code :attrs) tags]
 
-         (false? (:numbered attrs)) ;;(or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
+         ;;(false? (:numbered attrs)) 
+         (or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
          [[(assoc attrs :type :code :content code
                         :fact-level (inc (or (:fact-level current) 0)))]
           (dissoc current :code :attrs) tags]
@@ -216,7 +218,8 @@
          (:hide attrs)
          [[] (dissoc current :code :attrs) tags]
 
-         (false? (:numbered attrs)) ;;(or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
+         ;;(false? (:numbered attrs)) 
+         (or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
          [[(assoc attrs :type :code :content code
                         :fact-level (inc (or (:fact-level current) 0)))]
           (dissoc current :code :attrs) tags]
@@ -247,7 +250,8 @@
          (:hide attrs)
          [[] (dissoc current :code :attrs) tags]
 
-         (false? (:numbered attrs)) ;;(or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
+         ;;(false? (:numbered attrs)) 
+         (or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
          [[(assoc attrs :type :code :content code)]
           (dissoc current :code :attrs) tags]
 
