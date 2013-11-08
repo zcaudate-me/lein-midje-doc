@@ -137,8 +137,7 @@
             [[] (dissoc current :code :attrs) tags]
 
             ;;(false? (:numbered attrs)) 
-            (or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
-            [[(assoc attrs :type :code :content code
+            (not (or (:numbered attrs) (:title attrs) (:tag attrs)))            [[(assoc attrs :type :code :content code
                            :fact-level (or (:fact-level current) 0))]
              (dissoc current :code :attrs) tags]
 
@@ -185,7 +184,7 @@
          [[] (dissoc current :code :attrs) tags]
 
          ;;(false? (:numbered attrs)) 
-         (or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
+         (not (or (:numbered attrs) (:title attrs) (:tag attrs)))
          [[(assoc attrs :type :code :content code
                         :fact-level (inc (or (:fact-level current) 0)))]
           (dissoc current :code :attrs) tags]
@@ -219,8 +218,7 @@
          [[] (dissoc current :code :attrs) tags]
 
          ;;(false? (:numbered attrs)) 
-         (or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
-         [[(assoc attrs :type :code :content code
+         (not (or (:numbered attrs) (:title attrs) (:tag attrs)))         [[(assoc attrs :type :code :content code
                         :fact-level (inc (or (:fact-level current) 0)))]
           (dissoc current :code :attrs) tags]
 
@@ -251,8 +249,7 @@
          [[] (dissoc current :code :attrs) tags]
 
          ;;(false? (:numbered attrs)) 
-         (or (not (:numbered attrs)) (not (and (:title attrs) (:tag attrs))))
-         [[(assoc attrs :type :code :content code)]
+         (not (or (:numbered attrs) (:title attrs) (:tag attrs)))         [[(assoc attrs :type :code :content code)]
           (dissoc current :code :attrs) tags]
 
          :else
