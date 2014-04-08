@@ -5,7 +5,7 @@
             [watchtower.core :refer [watcher file-filter
                                      ignore-dotfiles extensions
                                      rate on-add on-modify on-delete]]
-            [me.raynes.conch :refer [programs]]))
+            [me.raynes.conch :refer [programs]] :reload))
 
 (programs which)
 
