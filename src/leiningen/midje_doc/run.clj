@@ -26,7 +26,7 @@
   (let [dmap (-> project :documentation :files)
         attrs (select-keys project [:version :url])
         ks (keys dmap)]
-    (binding [leiningen.midje-doc.renderer/*plain*
+    (binding [leiningen.midje-doc.run.renderer/*plain*
               (-> project :documentation :plain)]
       (doseq [k ks]
         (let [doc (get dmap k)]

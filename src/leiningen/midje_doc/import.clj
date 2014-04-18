@@ -68,8 +68,16 @@
            :else
            (recur (z/right* zloc) (conj output (z/node zloc))))))
 
+(defn compose [& fs]
+  (fn comp-fn
+    ([i] (comp-fn i fs))
+    ([i [f & more]]
+       (cond (nil? i) nil
+             (nil? f) i
+             :else (recur (f i) more)))))
+
 (defn fact-doc [zloc]
-  (->> (-> zloc z/down z/right z/down z/right)
+  (->> ((compose z/down z/right z/down z/right) zloc)
        (fact-to-doc-nodes)
        (map p/->string)
        (apply str)))
@@ -92,7 +100,6 @@
 (defn insert-docstring [zloc idx]
   (let [nloc (-> zloc z/down z/right)
         nstr (str (z/value nloc))]
-    (println (z/sexpr nloc) (z/sexpr zloc))
     (if-let [{:keys [attrs docs]} (get idx nstr)]
       (let [dloc (-> nloc
                      (fast-zip.core/insert-right
@@ -121,22 +128,21 @@
 (defn import-documentation [source-file test-file]
   (let [zloc (z/of-file source-file)
         idx  (function-index test-file)
+        ;;_    (prn idx)
         nloc (loop [ploc zloc]
+
                (let [nloc (z/right ploc)]
                  (cond (nil? nloc) ploc
 
                        (is-func-form? nloc)
-                       (do ;;(println (z/sexpr nloc))
-                         (recur
-                          (-> nloc
-                              minus-docstring
-                              (z/up)
-                              (insert-docstring idx))))
+                       (recur
+                        (-> nloc
+                            minus-docstring
+                            (insert-docstring idx)))
 
-                       :else
-                       (recur nloc))))]
-    (do ;;(z/print-root nloc)
-        (spit source-file (with-out-str (z/print-root nloc))))))
+                       :else (recur nloc)
+                       )))]
+    (spit source-file (with-out-str (z/print-root nloc)))))
 
 
 (defn import [project]
@@ -150,6 +156,9 @@
           (import-documentation src-file test-file))))))
 
 (comment
+
+  (import
+   (leiningen.core.project/read "../hara/project.clj"))
 
   (function-index )
   (import-documentation

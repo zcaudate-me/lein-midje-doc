@@ -37,14 +37,16 @@
         false)))
 
 (defn minus-docstring [zloc]
-  (let [ele (-> zloc z/down z/next z/next)
+  (let [ele (-> zloc z/down z/right z/right)
+        ;;_   (println "MINUS-PRE:" (z/sexpr ele))
         ele (if (-> ele z/sexpr string?)
               (z/remove ele)
               ele)
-        ele (z/next ele)
+        ele (z/right ele)
         ele (if (-> ele z/tag (= :map))
               (z/remove ele)
               ele)]
+    ;;(println "MINUS: "(z/sexpr (z/up ele)))
     (z/up ele)))
 
 ;;;; ---- Test/Source Duality
