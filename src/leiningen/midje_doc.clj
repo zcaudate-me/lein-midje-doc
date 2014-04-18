@@ -1,6 +1,7 @@
 (ns leiningen.midje-doc
   (:require [leiningen.midje-doc.common :refer [printv]]
             [leiningen.midje-doc.import :as import]
+            [leiningen.midje-doc.purge :as purge]
             [leiningen.midje-doc.run :as run]
             [leiningen.midje-doc.markdown :as markdown]
             [leiningen.midje-doc.scaffold :as scaffold]
@@ -14,6 +15,7 @@
            "help                shows this message"
            "import              import source docstrings from tests"
            "markdown            test markdown files   -  options `once`, `plain`"
+           "purge               removes imported source docstrings"
            "run                 generates documentation"
            "scaffold            generate test files from source"]))
 
@@ -45,6 +47,10 @@
 (defn midje-doc-run [project & args]
   (apply run/run project args))
 
+(defn midje-doc-purge [project & args]
+  (purge/purge project)
+  (println "The docstrings have been purged"))
+
 (defn midje-doc-scaffold [project & args]
   (scaffold/scaffold project)
   (println "The Test Scaffolding has been generated"))
@@ -56,4 +62,5 @@
    "import"    (midje-doc-import project)
    "markdown"  (midje-doc-markdown project)
    "run"       (apply midje-doc-run project args)
+   "purge"     (midje-doc-purge project)
    "scaffold"  (midje-doc-scaffold project)))
