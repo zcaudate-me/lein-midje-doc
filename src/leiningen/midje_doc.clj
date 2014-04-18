@@ -1,61 +1,59 @@
 (ns leiningen.midje-doc
-  (:require [leiningen.midje-doc.renderer :refer [render-html-doc]]
-            [leiningen.midje-doc.parser :refer [parse-content]]
-            [rewrite-clj.zip :as z]
-            [watchtower.core :refer [watcher file-filter
-                                     ignore-dotfiles extensions
-                                     rate on-add on-modify on-delete]]
-            [me.raynes.conch :refer [programs]] :reload))
+  (:require [leiningen.midje-doc.common :refer [printv]]
+            [leiningen.midje-doc.import :as import]
+            [leiningen.midje-doc.run :as run]
+            [leiningen.midje-doc.markdown :as markdown]
+            [leiningen.midje-doc.scaffold :as scaffold]
+            [clojure.string :as string]
+            [hara.common.error :refer [suppress]]))
 
-(programs which)
+(defn midje-doc-help [project]
+  (printv ["Subcommands for `lein midje-doc`"
+           ""
+           "<default>           generates project documentation"
+           "help                shows this message"
+           "import              import source docstrings from tests"
+           "markdown            test markdown files   -  options `once`, `plain`"
+           "run                 generates documentation"
+           "scaffold            generate test files from source"]))
 
-(defn process-doc [k doc project]
-  (let [infile (:input doc)
-        outfile (str k ".html")]
-    (println "Generating" outfile)
-    (try
-      (render-html-doc outfile
-                       doc
-                       (parse-content (z/of-file infile) project))
-      (println "...... DONE!")
-      (catch Throwable t
-        (println t)
-        (println "Error Generating" outfile)))))
+(defn midje-doc-import [project & args]
+  (import/import project)
+  (println "The source documentation has been imported."))
 
-(defn process-once [project]
-  (let [dmap (-> project :documentation :files)
-        attrs (select-keys project [:version :url])
-        ks (keys dmap)]
-    (binding [leiningen.midje-doc.renderer/*plain*
-              (-> project :documentation :plain)]
-      (doseq [k ks]
-        (let [doc (get dmap k)]
-          (process-doc k (merge attrs doc) project))))))
+(defn midje-doc-markdown [project]
+  (let [files (-> project :documentation :markdown)
+        results (->> (mapv (juxt #(-> % (markdown/test-markdown)
+                                      (suppress (str "Cannot Load File"))) identity) files)
+                     (group-by (comp not true? first)))]
+    (printv [""
+             " ------------------------------------------------------------"
+             "                      MARKDOWN SUMMARY"
+             " ------------------------------------------------------------"
+             ""
+             (if-let [failures (-> results (get true))]
+               (->> failures
+                    (map (fn [[reason filename]]
+                           (format "   FAILED: `%s`\t REASON: %s" filename (if (false? reason)
+                                                                             "Tests Failed"
+                                                                             reason))))
+                    (string/join "\n"))
+               "   SUCCESS")
+             ""
+             " ------------------------------------------------------------"])))
 
-(defn process-watch [project]
-  (let [p-once (fn [_] (process-once project))]
-    (p-once nil)
-    (watcher [(:root project)]
-             (rate 200) ;; poll every 200ms
-             (file-filter ignore-dotfiles) ;; add a filter for the files we care about
-             (file-filter (extensions :clj :cljs)) ;; filter by extensions
-             (on-modify  p-once); Optional
-             (on-delete  p-once); Optional
-             (on-add     p-once))))
+(defn midje-doc-run [project & args]
+  (apply run/run project args))
 
-(defn check-pygmentize []
-  (try (not (= "" (which "pygmentize")))
-       (catch Throwable t)))
+(defn midje-doc-scaffold [project & args]
+  (scaffold/scaffold project)
+  (println "The Test Scaffolding has been generated"))
 
-(defn midje-doc
-  "I don't do a lot."
-  [project & args]
-  (let [opts (set args)
-        project (if (or (opts "plain") (not (check-pygmentize)))
-                  (assoc-in project [:documentation :plain] true)
-                  project)]
-    (if (opts "once")
-      (process-once project)
-      (do
-        (process-watch project)
-        (Thread/sleep 100000000000000)))))
+(defn midje-doc [project & [sub & args]]
+ (condp = sub
+   nil         (apply midje-doc-run project args)
+   "help"      (midje-doc-help project)
+   "import"    (midje-doc-import project)
+   "markdown"  (midje-doc-markdown project)
+   "run"       (apply midje-doc-run project args)
+   "scaffold"  (midje-doc-scaffold project)))

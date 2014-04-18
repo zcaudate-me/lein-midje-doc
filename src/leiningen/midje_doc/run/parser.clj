@@ -1,4 +1,4 @@
-(ns leiningen.midje-doc.parser
+(ns leiningen.midje-doc.run.parser
   (:require [rewrite-clj.parser :as p]
             [rewrite-clj.zip :as z]
             [stencil.core :as stc]

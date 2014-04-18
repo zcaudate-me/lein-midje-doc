@@ -1,4 +1,4 @@
-(ns leiningen.midje-doc.renderer
+(ns leiningen.midje-doc.run.renderer
   (:require [hiccup.core :as html]
             [markdown.core :refer [md-to-html-string]]
             [me.raynes.conch :refer [programs]] :reload))
