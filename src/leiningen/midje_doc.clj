@@ -5,8 +5,7 @@
             [leiningen.midje-doc.run :as run]
             [leiningen.midje-doc.markdown :as markdown]
             [leiningen.midje-doc.scaffold :as scaffold]
-            [clojure.string :as string]
-            [hara.common.error :refer [suppress]]))
+            [clojure.string :as string]))
 
 (defn midje-doc-help [project]
   (printv ["Subcommands for `lein midje-doc`"
