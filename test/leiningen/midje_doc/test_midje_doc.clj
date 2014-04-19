@@ -1,5 +1,5 @@
-(ns midje-doc.test-midje-doc
-  (:require [leiningen.midje-doc :refer [process-doc]] :reload))
+(ns leiningen.midje-doc.test-midje-doc
+  (:require [leiningen.midje-doc.run :refer [run-doc]] :reload))
 
 
 #_(process-doc "my-first-document"
@@ -11,7 +11,7 @@
               :version "v0.0.12"
               :website "www.example.com"})
 
-(process-doc "my-first-document"
+#_(run-doc "my-first-document"
              {:input "/Users/zhengc/dev/chit/purnam-angular/test/cljs/midje_doc/purnam_angular_guide.cljs"
                            :title "purnam.angular"
                            :sub-title "Angular.js DSL in Clojurescript"

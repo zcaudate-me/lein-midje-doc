@@ -2,6 +2,7 @@
 
 `lein-midje-doc` fixes the problem of incorrectly documented examples by bridging the gap between writing tests and writing documentation.
 
+[![Build Status](https://travis-ci.org/zcaudate/lein-midje-doc.svg?branch=master)](https://travis-ci.org/zcaudate/lein-midje-doc)
 
 ### Installation
 

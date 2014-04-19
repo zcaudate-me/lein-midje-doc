@@ -1,4 +1,5 @@
-(ns midje-doc.api)
+(ns midje-doc.api
+  (:use midje.sweet))
 
 [[:chapter {:title "API Reference"}]]
 
@@ -203,7 +204,7 @@ Documentation examples put in `facts` forms allows the code to be verified for c
     (deref a) => 1
 
     [[{:title "Updating the atom" :tag "c-facts-2"}]]
-    (update a inc 1)
+    (swap! a inc)
     (deref a) => 2))
 
 (facts
@@ -212,7 +213,7 @@ Documentation examples put in `facts` forms allows the code to be verified for c
   (deref a) => 1
 
   [[{:title "Updating the atom" :tag "c-factss-2"}]]
-  (update a inc 1)
+  (swap! a inc)
   (deref a) => 2)
 
 [[:subsection {:title "fact form"}]]
@@ -226,7 +227,7 @@ Documentation examples put in `facts` forms allows the code to be verified for c
     (def a (atom 1))
     (deref a) => 1
 
-    (update a inc 1)
+    (swap! a inc 1)
     (deref a) => 2))
 
 [[{:title "Fact Form Output"}]]
@@ -234,7 +235,7 @@ Documentation examples put in `facts` forms allows the code to be verified for c
   (def a (atom 1))
   (deref a) => 1
 
-  (update a inc 1)
+  (swap! a inc)
   (deref a) => 2)
 
 [[:subsection {:title "comments"}]]
