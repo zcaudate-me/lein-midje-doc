@@ -10,7 +10,6 @@
                  [stencil "0.3.2"]
                  [me.raynes/conch "0.6.0"]
                  [im.chit/hara.common "2.0.2"]
-                 [im.chit/hara.io "2.0.2"]
                  [org.clojars.zcaudate/watchtower "0.1.2"]]
   :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
   :documentation {:files {"doc/index"

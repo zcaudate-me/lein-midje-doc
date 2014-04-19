@@ -25,8 +25,10 @@
 
 (defn midje-doc-markdown [project]
   (let [files (-> project :documentation :markdown)
-        results (->> (mapv (juxt #(-> % (markdown/test-markdown)
-                                      (suppress (str "Cannot Load File"))) identity) files)
+        results (->> (mapv (juxt #(-> % 
+                                      (markdown/test-markdown)
+                                      (try (catch Throwable t (str "Cannot Load File")))) 
+                                 identity) files)
                      (group-by (comp not true? first)))]
     (printv [""
              " ------------------------------------------------------------"
