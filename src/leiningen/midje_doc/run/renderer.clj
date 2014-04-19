@@ -136,7 +136,7 @@
     (if-let [rev (:revision document)]
       [:h5 "Revision: v" rev])
     [:h5 "Date: " (.format
-                   (java.text.SimpleDateFormat. "dd MMMM YYYY")
+                   (java.text.SimpleDateFormat. "dd MMMM yyyy")
                    (java.util.Date.))]
     (if-let [url (:url document)]
       [:h5 "Website: " [:a {:href url} url]])

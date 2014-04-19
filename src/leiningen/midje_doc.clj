@@ -64,4 +64,5 @@
    "markdown"  (midje-doc-markdown project)
    "run"       (apply midje-doc-run project args)
    "purge"     (midje-doc-purge project)
-   "scaffold"  (midje-doc-scaffold project)))
+   "scaffold"  (midje-doc-scaffold project)
+   (apply midje-doc-run project sub args)))
