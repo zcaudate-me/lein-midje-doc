@@ -9,7 +9,7 @@
 `lein-midje-doc` is a leiningen plugin. Install by adding entries in `~/.lein/profiles.clj`:
 
      {:user {:plugins ...
-             [lein-midje-doc "0.0.18"]
+             [lein-midje-doc "0.0.21"]
              ...}}
 
 ### Notice:
@@ -60,8 +60,15 @@ In the current state, this library is really just a hack job generating some pre
   - Refactor with multimethods
   - Clean up hacked-in code
   
+  
+## Contributors
+
+Chris Zheng
+Yannick Scherer
+Alex Walker
+  
 ## License
 
-Copyright © 2013 Chris Zheng
+Copyright © 2014 Chris Zheng
 
 Distributed under the The MIT License.

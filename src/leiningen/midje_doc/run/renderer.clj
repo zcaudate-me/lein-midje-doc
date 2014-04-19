@@ -18,7 +18,6 @@
                 (.replaceAll "&amp;lt;" "&lt;")
                 (.replaceAll "&amp;gt;" "&gt;")
                 (.replaceAll "&amp;amp;" "&amp;"))]
-    (println data)
     out))
 
 (defn adjust-facts-code [s spaces]
@@ -91,7 +90,7 @@
              (pygmentize  "-f" "html" "-l" (or (:lang elem) "clojure")
                           {:in (adjust-indented-code (:content elem)
                                                      (apply str (repeat (or (:fact-level elem) 0) "  ")))})]
-         (do (println output))
+         ;;(do (println output))
          output))]))
 
 

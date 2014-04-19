@@ -27,8 +27,8 @@
 "`lein-midje-doc` is a leiningen plugin. Install by adding entries in `~/.lein/profiles.clj`:
 
      {:user {:plugins ...
-             [lein-midje-doc '{{PROJECT.version}}']
-             [lein-midje     '3.0.1']
+             [lein-midje-doc \"{{PROJECT.version}}\"]
+             [lein-midje     \"3.0.1\"]
              ...}}
 "
 
