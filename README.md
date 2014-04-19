@@ -4,6 +4,18 @@
 
 [![Build Status](https://travis-ci.org/zcaudate/lein-midje-doc.svg?branch=master)](https://travis-ci.org/zcaudate/lein-midje-doc)
 
+### Whats New
+
+#### 0.0.21
+
+New submodules for working with project
+
+  - `markdown` for testing code in your markdown files
+  - `scaffold` for generating test scaffolding from souces
+  - `import`   for importing docstrings from tests 
+  - `purge`    for removing docstrings from sources
+
+
 ### Installation
 
 `lein-midje-doc` is a leiningen plugin. Install by adding entries in `~/.lein/profiles.clj`:
@@ -63,9 +75,9 @@ In the current state, this library is really just a hack job generating some pre
   
 ## Contributors
 
-Chris Zheng
-Yannick Scherer
-Alex Walker
+- Chris Zheng
+- Yannick Scherer
+- Alex Walker
   
 ## License
 
