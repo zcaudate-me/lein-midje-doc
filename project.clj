@@ -10,7 +10,8 @@
                  [stencil "0.3.2"]
                  [me.raynes/conch "0.6.0"]
                  [org.clojars.zcaudate/watchtower "0.1.2"]]
-  :profiles {:dev {:dependencies [[midje "1.5.1"]]}}
+  :profiles {:dev {:dependencies [[midje "1.6.3"]
+                                  [lein-midje "3.1.3"]]}}
   :documentation {:files {"doc/index"
                           {:input "test/midje_doc/midje_doc_guide.clj"
                            :title "midje-doc"
