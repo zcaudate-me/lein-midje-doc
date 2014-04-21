@@ -1,4 +1,4 @@
 [submodule "docs"]
 	path = docs
-	url = git@github.com:zcaudate/lein-midje-doc.git
+	url = https://github.com/zcaudate/lein-midje-doc.git
 	branch = gh-pages
