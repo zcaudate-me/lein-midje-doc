@@ -27,7 +27,7 @@
 ;;;; ----
 
 (defn is-func-form?
-  ([zloc] (is-func-form? zloc '#{defn defmulti defmacro defn- defmethod}))
+  ([zloc] (is-func-form? zloc '#{defn defmulti defmacro defn-}))
   ([zloc forms]
       (if (and (= :list (z/tag zloc))
                (get forms

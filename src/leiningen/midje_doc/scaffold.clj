@@ -18,45 +18,50 @@
     [(z/sexpr nameloc) doc attr]))
 
 
-(defn create-fact-meta [namespace name attrs]
-  (format "^{:refer %s/%s%s}"
+(defn create-fact-meta [project namespace name attrs]
+  (format "^{:refer %s/%s%s :added \"%s\"}"
           namespace name
           (if (empty? attrs) ""
               (apply str (map (fn [[k v]]
                                 (-> (str " " (with-out-str (prn k v)))
-                                    (.replace "\n" ""))) attrs)))))
+                                    (.replace "\n" ""))) attrs)))
+          (if-let [version (and attrs
+                                (:version attrs))]
+            version
+            (:version project))))
 
 (defn create-fact-form [namespace doc]
   (let [lines (->> (string/split (str "(fact \"" doc "\")") #"\n")
                    (map #(.replaceAll % "^  " "")))]
     (string/join "\n" lines)))
 
-(defn create-fact-entry [namespace funcloc]
+(defn create-fact-entry [project namespace funcloc]
   (let [[name doc attrs] (func-info funcloc)
-        meta  (create-fact-meta namespace name attrs)
+        meta  (create-fact-meta project namespace name attrs)
+        _     (println "DOC:" doc  "NAME:" name)
         fact  (create-fact-form namespace
                                 (-> (or doc (str name))
                                     (.replaceAll "\\\"" "\\\\\"")))]
     (str meta "\n" fact)))
 
 (defn generate-fact-forms
-  ([namespace zloc] (generate-fact-forms namespace zloc []))
-  ([namespace zloc output]
+  ([project namespace zloc] (generate-fact-forms project namespace zloc []))
+  ([project namespace zloc output]
      (cond (nil? zloc) output
 
            (is-func-form? zloc)
-           (recur namespace (z/right zloc) (conj output (create-fact-entry namespace zloc)))
+           (recur project namespace (z/right zloc) (conj output (create-fact-entry project namespace zloc)))
 
            :else
-           (recur namespace (z/right zloc) output))))
+           (recur project namespace (z/right zloc) output))))
 
-(defn generate-test [source]
+(defn generate-test [project source]
   (let [zloc  (z/of-file source)
         nsloc (->> (iterate z/right zloc)
                    (filter #(is-func-form? % #{'ns}))
                    (first))
         namespace (-> nsloc z/down z/right z/sexpr)]
-    (->> (generate-fact-forms namespace nsloc)
+    (->> (generate-fact-forms project namespace nsloc)
          (cons (format "(ns %s\n  (:use midje.sweet)\n  (:require [%s :refer :all]))"
                        (str namespace "-test") namespace))
          (string/join "\n\n"))))
@@ -68,14 +73,18 @@
                        (filter #(->> % (.getName) (re-find #"\.cljs?$"))))]
     (doseq [src-file src-files]
       (let [test-file (io/as-file (test-file-path project src-file))]
+        (println "FILE:" src-file "->" test-file)
         (when-not (.exists test-file)
-          (let [output (generate-test src-file)]
+          (let [output (generate-test project src-file)]
             (-> test-file (.getParent) (io/as-file) (.mkdirs))
             (spit test-file output)))))))
 
 (comment
   (scaffold
    (leiningen.core.project/read "example/hara/project.clj"))
+
+  (scaffold
+   (leiningen.core.project/read "../iroh/project.clj"))
 
   (println (generate-test "src/leiningen/scholastic/analysis/test.clj"))
 
