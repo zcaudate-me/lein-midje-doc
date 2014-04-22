@@ -128,13 +128,12 @@
 (defn import-documentation [source-file test-file]
   (let [zloc (z/of-file source-file)
         idx  (function-index test-file)
-        ;;_    (prn idx)
         nloc (loop [ploc zloc]
 
                (let [nloc (z/right ploc)]
                  (cond (nil? nloc) ploc
 
-                       (is-func-form? nloc)
+                       (is-func-form? nloc '#{defn defmulti defmacro defn-})
                        (recur
                         (-> nloc
                             minus-docstring
@@ -157,7 +156,10 @@
 (comment
 
   (import
-   (leiningen.core.project/read "../hara/project.clj"))
+   (leiningen.core.project/read "../iroh/project.clj"))
+
+  (import
+   (leiningen.core.project/read "..//project.clj"))
 
   (function-index )
   (import-documentation

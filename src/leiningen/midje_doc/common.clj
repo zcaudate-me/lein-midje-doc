@@ -27,7 +27,7 @@
 ;;;; ----
 
 (defn is-func-form?
-  ([zloc] (is-func-form? zloc '#{defn defmulti defmacro defn-}))
+  ([zloc] (is-func-form? zloc '#{defn defmulti defmacro}))
   ([zloc forms]
       (if (and (= :list (z/tag zloc))
                (get forms
@@ -38,15 +38,13 @@
 
 (defn minus-docstring [zloc]
   (let [ele (-> zloc z/down z/right z/right)
-        ;;_   (println "MINUS-PRE:" (z/sexpr ele))
         ele (if (-> ele z/sexpr string?)
               (z/remove ele)
               ele)
-        ele (z/right ele)
+        ele (or (z/right ele) ele)
         ele (if (-> ele z/tag (= :map))
               (z/remove ele)
               ele)]
-    ;;(println "MINUS: "(z/sexpr (z/up ele)))
     (z/up ele)))
 
 ;;;; ---- Test/Source Duality
