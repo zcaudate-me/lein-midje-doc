@@ -9,7 +9,11 @@
                  [markdown-clj "0.9.29"]
                  [stencil "0.3.2"]
                  [me.raynes/conch "0.6.0"]
-                 [org.clojars.zcaudate/watchtower "0.1.2"]]
+                 [org.clojars.zcaudate/watchtower "0.1.2"]
+                 ;; For serving static files
+                 [http-kit "2.1.16"]
+                 [compojure "1.1.6"]
+                 ]
   :profiles {:dev {:dependencies [[midje "1.6.3"]
                                   [lein-midje "3.1.3"]]}}
   :documentation {:files {"docs/index"
