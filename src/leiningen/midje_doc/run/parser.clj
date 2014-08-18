@@ -87,6 +87,10 @@
        (= 'ns
           (-> fzip z/down z/value))))
 
+(defn meta-fact-form? [fzip]
+  (and (= :meta (z/tag fzip))
+       (= '[:token fact] (-> fzip z/down z/right z/value))))
+
 (defn fact-form? [fzip]
   (and (= :list (z/tag fzip))
        (= 'fact
@@ -96,7 +100,6 @@
   (and (= :list (z/tag fzip))
        (= 'facts
           (-> fzip z/down z/value))))
-
 
 (defn comment-form? [fzip]
   (and (= :list (z/tag fzip))
@@ -136,7 +139,7 @@
       (cond (:hide attrs)
             [[] (dissoc current :code :attrs) tags]
 
-            ;;(false? (:numbered attrs)) 
+            ;;(false? (:numbered attrs))
             (not (or (:numbered attrs) (:title attrs) (:tag attrs)))            [[(assoc attrs :type :code :content code
                            :fact-level (or (:fact-level current) 0))]
              (dissoc current :code :attrs) tags]
@@ -183,7 +186,7 @@
          (:hide attrs)
          [[] (dissoc current :code :attrs) tags]
 
-         ;;(false? (:numbered attrs)) 
+         ;;(false? (:numbered attrs))
          (not (or (:numbered attrs) (:title attrs) (:tag attrs)))
          [[(assoc attrs :type :code :content code
                         :fact-level (inc (or (:fact-level current) 0)))]
@@ -217,9 +220,11 @@
          (:hide attrs)
          [[] (dissoc current :code :attrs) tags]
 
-         ;;(false? (:numbered attrs)) 
-         (not (or (:numbered attrs) (:title attrs) (:tag attrs)))         [[(assoc attrs :type :code :content code
-                        :fact-level (inc (or (:fact-level current) 0)))]
+         ;;(false? (:numbered attrs))
+         (not (or (:numbered attrs) (:title attrs) (:tag attrs)))
+         [[(assoc attrs
+             :type :code :content code
+             :fact-level (inc (or (:fact-level current) 0)))]
           (dissoc current :code :attrs) tags]
 
          :else
@@ -233,6 +238,16 @@
       elems
       nelems) current tags]))
 
+(defn parse-meta-fact-form [fzip current tags]
+  (let [extras (-> fzip z/down z/sexpr)
+        extras (if (keyword? extras)
+                 {extras true}
+                 extras)]
+    (parse-fact-form (-> fzip z/down z/right)
+                     (update-in current [:attrs] merge
+                                {:title (name (:refer extras))}
+                                extras)
+                     tags)))
 
 (defn parse-code-form-contents [fzip]
   (-> fzip z/down z/next z/next z/sexpr))
@@ -248,7 +263,7 @@
          (:hide attrs)
          [[] (dissoc current :code :attrs) tags]
 
-         ;;(false? (:numbered attrs)) 
+         ;;(false? (:numbered attrs))
          (not (or (:numbered attrs) (:title attrs) (:tag attrs)))         [[(assoc attrs :type :code :content code)]
           (dissoc current :code :attrs) tags]
 
@@ -439,6 +454,9 @@
 
               (attribute? fzip)
               (parse-attribute fzip current tags)
+
+              (meta-fact-form? fzip)
+              (parse-meta-fact-form fzip current tags)
 
               (fact-form? fzip)
               (parse-fact-form fzip current tags)
