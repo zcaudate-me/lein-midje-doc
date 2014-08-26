@@ -6,7 +6,7 @@
 
 ### Whats New
 
-#### 0.0.21
+#### 0.0.24
 
 New submodules for working with project
 
@@ -21,7 +21,7 @@ New submodules for working with project
 `lein-midje-doc` is a leiningen plugin. Install by adding entries in `~/.lein/profiles.clj`:
 
      {:user {:plugins ...
-             [lein-midje-doc "0.0.21"]
+             [lein-midje-doc "0.0.24"]
              ...}}
 
 ### Notice:
