@@ -11,6 +11,7 @@
                  [me.raynes/conch "0.6.0"]
                  [org.clojars.zcaudate/watchtower "0.1.2"]]
   :profiles {:dev {:dependencies [[midje "1.6.3"]
+                                  [leiningen "2.5.0"]
                                   [lein-midje "3.1.3"]]}}
   :documentation {:files {"docs/index"
                           {:input "test/midje_doc/midje_doc_guide.clj"
@@ -25,4 +26,5 @@
                            :sub-title "subtitle goes here"
                            :author "name"
                            :email  "email@domain.com"}}}
-  :eval-in-leiningen true)
+  ;;:eval-in-leiningen true
+  )
