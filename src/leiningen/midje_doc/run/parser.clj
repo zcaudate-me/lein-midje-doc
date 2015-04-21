@@ -1,6 +1,7 @@
 (ns leiningen.midje-doc.run.parser
   (:require [rewrite-clj.parser :as p]
             [rewrite-clj.zip :as z]
+            [rewrite-clj.node :as node]
             [stencil.core :as stc]
             [hiccup.util :refer [escape-html]]))
 
@@ -22,40 +23,40 @@
                (z/tag sfzip))
             (cond (nil? pred) true
                   :else
-                  (let [v (-> sfzip z/down z/node)]
+                  (let [v (-> sfzip z/down z/sexpr)]
                     (if (fn? pred)
                       (pred v)
                       (= v pred))))))))
 
 (defn file-element? [fzip]
-  (double-vector? fzip [:token :file]))
+  (double-vector? fzip :file))
 
 (defn ns-element? [fzip]
-  (double-vector? fzip [:token :ns]))
+  (double-vector? fzip :ns))
 
 (defn chapter-element? [fzip]
-  (double-vector? fzip [:token :chapter]))
+  (double-vector? fzip :chapter))
 
 (defn include-element? [fzip]
-  (double-vector? fzip [:token :include]))
+  (double-vector? fzip :include))
 
 (defn section-element? [fzip]
-  (double-vector? fzip [:token :section]))
+  (double-vector? fzip :section))
 
 (defn subsection-element? [fzip]
-  (double-vector? fzip [:token :subsection]))
+  (double-vector? fzip :subsection))
 
 (defn subsubsection-element? [fzip]
-  (double-vector? fzip [:token :subsubsection]))
+  (double-vector? fzip :subsubsection))
 
 (defn image-element? [fzip]
-  (double-vector? fzip [:token :image]))
+  (double-vector? fzip :image))
 
 (defn paragraph-element? [fzip]
-  (double-vector? fzip [:token :paragraph]))
+  (double-vector? fzip :paragraph))
 
 (defn code-element? [fzip]
-  (double-vector? fzip [:token :code]))
+  (double-vector? fzip :code))
 
 (defn paragraph? [fzip]
   (and (= :token (z/tag fzip))
@@ -65,7 +66,7 @@
   (= :multi-line (z/tag fzip)))
 
 (defn attribute? [fzip]
-  (double-vector? fzip #(-> % first (= :map))))
+  (double-vector? fzip map?))
 
 (defn whitespace? [fzip]
   (= :whitespace (z/tag fzip)))

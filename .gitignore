@@ -17,3 +17,4 @@ pom.xml.asc
 /example
 /scratch
 .DS_Store
+*.*#

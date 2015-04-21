@@ -1,18 +1,18 @@
-(defproject lein-midje-doc "0.0.24"
+(defproject lein-midje-doc "0.0.25"
   :description "Documentation generator for midje"
   :url "http://www.github.com/zcaudate/lein-midje-doc"
   :license {:name "The MIT License"
             :url "http://http://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.5.1"]
-                 [rewrite-clj "0.3.9"]
-                 [hiccup "1.0.4"]
+  :dependencies [[org.clojure/clojure "1.6.0"]
+                 [rewrite-clj "0.4.12"]
+                 [hiccup "1.0.5"]
                  [markdown-clj "0.9.29"]
-                 [stencil "0.3.2"]
+                 [stencil "0.3.5"]
                  [me.raynes/conch "0.6.0"]
                  [org.clojars.zcaudate/watchtower "0.1.2"]]
   :profiles {:dev {:dependencies [[midje "1.6.3"]
-                                  [leiningen "2.5.0"]
-                                  [lein-midje "3.1.3"]]}}
+                                  [leiningen "2.5.0"]]
+                   :plugins [[lein-midje "3.1.3"]]}}
   :documentation {:files {"docs/index"
                           {:input "test/midje_doc/midje_doc_guide.clj"
                            :title "midje-doc"

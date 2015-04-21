@@ -1,6 +1,6 @@
 (ns leiningen.midje-doc.import
   (:require [rewrite-clj.zip :as z]
-            [rewrite-clj.printer :as p]
+            ;;[rewrite-clj.printer :as p]
             [clojure.java.io :as io]
             [clojure.string :as string]
             [leiningen.midje-doc.common :refer :all])
@@ -9,7 +9,7 @@
 (defn fact-attr [zloc]
   (and (= :meta (z/tag zloc))
        (-> zloc z/value)
-       (-> zloc z/value p/->string read-string)))
+       (-> zloc z/value z/->string read-string)))
 
 (defn fact-form [zloc]
   (if (= :meta (z/tag zloc))
@@ -79,7 +79,7 @@
 (defn fact-doc [zloc]
   (->> ((compose z/down z/right z/down z/right) zloc)
        (fact-to-doc-nodes)
-       (map p/->string)
+       (map z/->string)
        (apply str)))
 
 (defn fact-pair [zloc]
@@ -102,23 +102,23 @@
         nstr (str (z/value nloc))]
     (if-let [{:keys [attrs docs]} (get idx nstr)]
       (let [dloc (-> nloc
-                     (fast-zip.core/insert-right
+                     (clojure.zip/insert-right
                       [:newline "\n"])
                      (z/right*)
-                     (fast-zip.core/insert-right
+                     (clojure.zip/insert-right
                       [:whitespace "  "])
                      (z/right*)
-                     (fast-zip.core/insert-right
+                     (clojure.zip/insert-right
                       (apply vector :multi-line
                              (string/split-lines docs)))
                      (z/right*))
             attrloc (if (empty? attrs)
                       dloc
                       (-> dloc
-                          (fast-zip.core/insert-right
+                          (clojure.zip/insert-right
                            [:newline "\n"])
                           (z/right*)
-                          (fast-zip.core/insert-right
+                          (clojure.zip/insert-right
                            [:whitespace " "])
                           (z/right*)
                           (z/insert-right attrs)))]
