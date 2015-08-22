@@ -4,6 +4,10 @@
 
 [![Build Status](https://travis-ci.org/zcaudate/lein-midje-doc.svg?branch=master)](https://travis-ci.org/zcaudate/lein-midje-doc)
 
+## DEPRECATION NOTICE
+
+`lein-midje-doc` has been DEPRECATED, the new repo can be found at [helpshift/hydrox](https://github.com/helpshift/hydrox). The announcement was made [here](http://z.caudate.me/lein-midje-doc-is-now-hydrox/).
+
 ### Whats New
 
 #### 0.0.24
@@ -12,7 +16,7 @@ New submodules for working with project
 
   - `markdown` for testing code in your markdown files
   - `scaffold` for generating test scaffolding from souces
-  - `import`   for importing docstrings from tests 
+  - `import`   for importing docstrings from tests
   - `purge`    for removing docstrings from sources
 
 
@@ -59,7 +63,7 @@ In the current state, this library is really just a hack job generating some pre
   - Equations  
 - Themes
 - Elements
-  - `:reference` element for tabulization of ns-publics in a namespace 
+  - `:reference` element for tabulization of ns-publics in a namespace
 - Attributes
   - `:ignore`
 - Linking to Multiple Documents (Generate an entire Site)
@@ -71,14 +75,14 @@ In the current state, this library is really just a hack job generating some pre
 - Codebase
   - Refactor with multimethods
   - Clean up hacked-in code
-  
-  
+
+
 ## Contributors
 
 - Chris Zheng
 - Yannick Scherer
 - Alex Walker
-  
+
 ## License
 
 Copyright © 2014 Chris Zheng
